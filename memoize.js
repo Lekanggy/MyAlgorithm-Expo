@@ -1,46 +1,25 @@
 
-function isSubset(setArr, subSet){
-    return subSet.every(d=> setArr.includes(d))
+function memoize(fn){
+    let cache = {}
+    return function(...args){
+        const key = String(args)
+        if(key in cache){
+            return cache[key]
+        }
+
+        const result = fn(...args)
+        cache[key] = result
+
+        return result
+    }
 }
 
-function memoize(fn) {
-    let cache = {}
-    let result = {}
-    let count = 0
-    
-   
-   
-     return function(...args) {
-         var runCall = false
-         cache[count] = args
-         const values = Object.values(cache)
-        
-         if(values.length > 1){
-           
-            for(const item of values){
-                //console.log("seen", item)
-                 runCall = isSubset(item, args)
-                 if(runCall){
-                    console.log("second")
-                    return result[count];
-                 } 
-            }
-         }
-
-         count += 1
-
-         result[count] = fn(...args)
-         console.log(result[count])
-         console.log("vsa", result)
-         console.log("count", cache)
-       
-        
-        return result[count]
-         
-    }
- }
 
  const memo = memoize((a, b)=> a + b)
+ //[[1,3],[],[3,1],[10,10],[]]
 
- console.log("ouside", memo(2, 4))
- console.log("ouside2", memo(4, 2))
+ console.log("ouside1", memo(1, 3))
+ console.log("ouside2", memo())
+ console.log("ouside3", memo(3, 1))
+ console.log("ouside4", memo(10, 10))
+ console.log("ouside5", memo())
